@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>From idea to live affiliate site in one day: how we built Switcherr — Factoria</title>
+  <meta name="description" content="How Factoria built Switcherr, a French electricity comparison site with affiliate links, email capture, and SEO blog, in a single day. Full technical breakdown." />
+  <link rel="canonical" href="https://gawad95.github.io/factoria/blog/energy-comparison-site-one-day.html" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <script>tailwind.config = { theme: { extend: { fontFamily: { sans: ['Inter', 'sans-serif'] } } } }</script>
+  <style>
+    body { background: #0a0a0f; color: #e2e8f0; }
+    .gradient-text { background: linear-gradient(135deg, #a78bfa, #ec4899); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .pill { background: rgba(124,58,237,.15); border: 1px solid rgba(124,58,237,.3); color: #a78bfa; border-radius: 9999px; padding: 4px 14px; font-size: 0.75rem; font-weight: 600; }
+    article h2 { font-size: 1.25rem; font-weight: 700; color: white; margin-top: 2.5rem; margin-bottom: 0.75rem; }
+    article p { color: #94a3b8; line-height: 1.8; margin-bottom: 1.25rem; }
+    article ul, article ol { color: #94a3b8; line-height: 1.8; margin-bottom: 1.25rem; padding-left: 1.5rem; }
+    article ul { list-style-type: disc; } article ol { list-style-type: decimal; }
+    article li { margin-bottom: 0.35rem; }
+    article strong { color: #e2e8f0; }
+    .callout { background: rgba(124,58,237,.08); border: 1px solid rgba(124,58,237,.25); border-radius: 12px; padding: 1.25rem 1.5rem; margin: 2rem 0; }
+    .stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin: 2rem 0; }
+    .stat-box { background: #0f0f1a; border: 1px solid #1e1b4b; border-radius: 12px; padding: 1.25rem; text-align: center; }
+  </style>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"From idea to live affiliate site in one day: how we built Switcherr","datePublished":"2026-03-31","author":{"@type":"Organization","name":"Factoria"},"publisher":{"@type":"Organization","name":"Factoria","url":"https://gawad95.github.io/factoria/"}}</script>
+</head>
+<body class="font-sans antialiased">
+  <nav class="fixed top-0 w-full z-50 bg-black/60 backdrop-blur-md border-b border-white/5">
+    <div class="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
+      <a href="../index.html" class="flex items-center gap-2">
+        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-600 to-pink-500 flex items-center justify-center text-white font-black text-sm">F</div>
+        <span class="font-bold text-white text-lg">Factoria</span>
+      </a>
+      <div class="flex items-center gap-6">
+        <a href="index.html" class="text-sm text-violet-400 font-medium">← Blog</a>
+        <a href="../index.html#contact" class="bg-gradient-to-r from-violet-600 to-pink-500 text-white font-semibold text-sm px-5 py-2 rounded-xl hover:opacity-90 transition">Work with us</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="max-w-2xl mx-auto px-6 pt-32 pb-20">
+    <div class="mb-6 flex items-center gap-3">
+      <span class="pill">Case Study</span>
+      <span class="text-xs text-slate-500">March 31, 2026 · 6 min read</span>
+    </div>
+    <h1 class="text-4xl font-black text-white leading-tight mb-4">
+      From idea to live affiliate site in one day: how we built Switcherr
+    </h1>
+    <p class="text-slate-400 text-lg mb-10">Switcherr compares 7 French electricity providers, captures user profiles via email, and earns affiliate commissions. Zero hosting cost. Shipped in one session.</p>
+
+    <article>
+
+      <p>The French electricity market opened to competition in 2007, but most French households still don't know they can switch providers and save €100–500/year. That's a classic affiliate arbitrage opportunity: high-intent users searching "meilleur fournisseur électricité 2026" with commercial intent, and a comparison tool that earns a commission when they convert.</p>
+
+      <p>We shipped <a href="https://gawad95.github.io/switcherr/" class="text-violet-400 hover:underline">Switcherr</a> in a single day. Here's the full breakdown.</p>
+
+      <h2>The product decision</h2>
+
+      <p>Affiliate comparison sites work when three conditions are met:</p>
+      <ol>
+        <li>Search volume exists for "best X in [country]"</li>
+        <li>At least one provider has an affiliate program</li>
+        <li>The comparison tool provides genuine utility (not just a list of links)</li>
+      </ol>
+
+      <p>French electricity hits all three. Monthly searches for electricity comparison terms exceed 50,000. Papernest, Selectra, and direct provider programs all pay commissions. And the actual comparison logic — cost per kWh × annual consumption + annual subscription — is genuinely useful because most users don't do the math themselves.</p>
+
+      <h2>The stack: zero infrastructure, zero hosting cost</h2>
+
+      <p>The entire product is a single HTML file with Tailwind CDN and vanilla JavaScript. No framework. No build step. No server. Deployed to GitHub Pages — which is free and auto-deploys on every push.</p>
+
+      <div class="stat-grid">
+        <div class="stat-box">
+          <div class="text-2xl font-black text-violet-400">1</div>
+          <div class="text-xs text-slate-500 mt-1">HTML file</div>
+        </div>
+        <div class="stat-box">
+          <div class="text-2xl font-black text-violet-400">€0</div>
+          <div class="text-xs text-slate-500 mt-1">Monthly hosting</div>
+        </div>
+        <div class="stat-box">
+          <div class="text-2xl font-black text-violet-400">1 day</div>
+          <div class="text-xs text-slate-500 mt-1">Time to live</div>
+        </div>
+      </div>
+
+      <p>This matters for economics. A comparison site that earns €300/month in commissions with €0 in costs has infinite margin. A comparison site on a €50/month VPS needs to earn before it breaks even.</p>
+
+      <h2>The comparison engine</h2>
+
+      <p>The core calculation runs entirely in the browser with no API calls:</p>
+      <ul>
+        <li>User inputs annual consumption (kWh), tariff option (Base or Heures Creuses), and subscribed power (kVA)</li>
+        <li>The engine calculates annual cost for each provider: <code class="text-violet-400">annual = (kwh × pricePerKwh) + subscriptionPerYear</code></li>
+        <li>Results sort by price, with savings vs. current supplier highlighted</li>
+        <li>Each provider card links to the provider's subscription page with UTM parameters</li>
+      </ul>
+
+      <p>We priced 7 providers using March 2026 data pulled directly from each provider's tariff pages. The data is baked into the HTML — no API, no database. Updating prices takes 5 minutes and a git push.</p>
+
+      <h2>The email capture</h2>
+
+      <p>Price comparison users are high-intent but may not convert immediately. They shop around, compare, and come back later — often without remembering where they found the best deal.</p>
+
+      <p>We capture email with consumption profile attached: "Alert me when a better deal appears for my profile." The form sends to Formsubmit.co (free, zero accounts needed) with hidden fields carrying the user's consumption/option/puissance/supplier data. That gives us segmented leads for follow-up, not just a flat email list.</p>
+
+      <h2>The SEO layer</h2>
+
+      <p>The comparator itself is a JavaScript-rendered app — not great for SEO on its own. So we added a static blog with three posts targeting high-volume French queries:</p>
+      <ul>
+        <li>"Meilleure offre électricité 2026" — informational intent, high volume</li>
+        <li>"Comment changer fournisseur électricité" — how-to intent, captures mid-funnel</li>
+        <li>"OHM vs EDF vs Ekwateur" — comparison intent, direct affiliate CTA</li>
+      </ul>
+
+      <p>Each blog post ends with a CTA to the comparator with UTM tracking. Sitemap.xml submitted to Google. Estimated time to first organic traffic: 4-8 weeks.</p>
+
+      <h2>The monetization path</h2>
+
+      <p>Right now: direct UTM links to each provider's subscription page. No formal affiliate agreement, so no commissions yet — just traffic tracking. Next step: apply to Papernest's partner program (they aggregate and earn commission on every switch, sharing a portion with referring sites).</p>
+
+      <div class="callout">
+        <p class="text-slate-300 text-sm"><strong>The lesson:</strong> You can build a fully functional affiliate site in one day and make it commission-ready in one more. The bottleneck isn't building — it's approval by the affiliate program and Google indexing. Both are in motion the moment you ship.</p>
+      </div>
+
+      <h2>What this looks like as a service</h2>
+
+      <p>If you have a niche where affiliate comparison works — insurance, software tools, financial products, home services — we can build this for you. The stack is identical, the data changes. Delivery is one week. Starting from €2,400.</p>
+
+    </article>
+
+    <div class="mt-12 p-8 rounded-2xl text-center" style="background: linear-gradient(135deg, rgba(124,58,237,.1), rgba(236,72,153,.1)); border: 1px solid rgba(124,58,237,.3)">
+      <p class="font-bold text-white text-lg mb-2">Have a niche in mind?</p>
+      <p class="text-slate-400 text-sm mb-5">We'll build your affiliate comparison site. Fast, zero infrastructure, wired for commissions.</p>
+      <a href="../index.html#contact" class="inline-block bg-gradient-to-r from-violet-600 to-pink-500 text-white font-bold px-7 py-3.5 rounded-xl hover:opacity-90 transition">Get a quote →</a>
+    </div>
+
+    <div class="mt-8 pt-8 border-t border-white/5">
+      <a href="index.html" class="text-violet-400 text-sm hover:text-violet-300">← Back to blog</a>
+    </div>
+  </div>
+
+  <footer class="text-center text-xs text-slate-600 py-8 border-t border-white/5">
+    © 2026 Factoria · <a href="../index.html" class="hover:text-slate-400">Home</a>
+  </footer>
+</body>
+</html>

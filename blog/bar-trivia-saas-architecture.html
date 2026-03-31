@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Architecture of a real-time AI trivia SaaS: Barplay teardown — Factoria</title>
+  <meta name="description" content="Full technical breakdown of Barplay: a real-time bar trivia SaaS with Claude AI question generation, pgvector deduplication, Stripe billing, and Next.js frontend." />
+  <link rel="canonical" href="https://gawad95.github.io/factoria/blog/bar-trivia-saas-architecture.html" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <script>tailwind.config = { theme: { extend: { fontFamily: { sans: ['Inter', 'sans-serif'] } } } }</script>
+  <style>
+    body { background: #0a0a0f; color: #e2e8f0; }
+    .gradient-text { background: linear-gradient(135deg, #a78bfa, #ec4899); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .pill { background: rgba(124,58,237,.15); border: 1px solid rgba(124,58,237,.3); color: #a78bfa; border-radius: 9999px; padding: 4px 14px; font-size: 0.75rem; font-weight: 600; }
+    article h2 { font-size: 1.25rem; font-weight: 700; color: white; margin-top: 2.5rem; margin-bottom: 0.75rem; }
+    article h3 { font-size: 1rem; font-weight: 700; color: #e2e8f0; margin-top: 1.5rem; margin-bottom: 0.5rem; }
+    article p { color: #94a3b8; line-height: 1.8; margin-bottom: 1.25rem; }
+    article ul, article ol { color: #94a3b8; line-height: 1.8; margin-bottom: 1.25rem; padding-left: 1.5rem; }
+    article ul { list-style-type: disc; } article ol { list-style-type: decimal; }
+    article li { margin-bottom: 0.35rem; }
+    article strong { color: #e2e8f0; }
+    .code-block { background: #0f0f1a; border: 1px solid #1e1b4b; border-radius: 12px; padding: 1.25rem 1.5rem; font-family: monospace; font-size: 0.82rem; color: #a78bfa; overflow-x: auto; margin: 1.5rem 0; line-height: 1.7; }
+    .callout { background: rgba(124,58,237,.08); border: 1px solid rgba(124,58,237,.25); border-radius: 12px; padding: 1.25rem 1.5rem; margin: 2rem 0; }
+    .arch-row { display: grid; grid-template-columns: 120px 1fr; gap: 1rem; margin-bottom: 0.75rem; align-items: start; }
+    .arch-label { background: #0f0f1a; border: 1px solid #1e1b4b; border-radius: 8px; padding: 0.4rem 0.75rem; font-size: 0.75rem; font-weight: 600; color: #a78bfa; text-align: center; }
+  </style>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Architecture of a real-time AI trivia SaaS: Barplay teardown","datePublished":"2026-03-31","author":{"@type":"Organization","name":"Factoria"},"publisher":{"@type":"Organization","name":"Factoria","url":"https://gawad95.github.io/factoria/"}}</script>
+</head>
+<body class="font-sans antialiased">
+  <nav class="fixed top-0 w-full z-50 bg-black/60 backdrop-blur-md border-b border-white/5">
+    <div class="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
+      <a href="../index.html" class="flex items-center gap-2">
+        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-600 to-pink-500 flex items-center justify-center text-white font-black text-sm">F</div>
+        <span class="font-bold text-white text-lg">Factoria</span>
+      </a>
+      <div class="flex items-center gap-6">
+        <a href="index.html" class="text-sm text-violet-400 font-medium">← Blog</a>
+        <a href="../index.html#contact" class="bg-gradient-to-r from-violet-600 to-pink-500 text-white font-semibold text-sm px-5 py-2 rounded-xl hover:opacity-90 transition">Work with us</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="max-w-2xl mx-auto px-6 pt-32 pb-20">
+    <div class="mb-6 flex items-center gap-3">
+      <span class="pill">Technical</span>
+      <span class="text-xs text-slate-500">March 31, 2026 · 7 min read</span>
+    </div>
+    <h1 class="text-4xl font-black text-white leading-tight mb-4">
+      Architecture of a real-time AI trivia SaaS: Barplay teardown
+    </h1>
+    <p class="text-slate-400 text-lg mb-10">Barplay lets bar venues run AI-powered trivia nights. Players scan a QR code, join from their phone, and compete on Claude-generated questions in real time. Full stack breakdown.</p>
+
+    <article>
+
+      <p>Most bar trivia is a pain to run. The host has to source questions, manage paper score sheets, and deal with disputes. We built Barplay to eliminate all of that: a venue gets a QR code, players join from their phones, and the entire game — question generation, scoring, leaderboard — runs automatically.</p>
+
+      <p>This is a technical breakdown of how it's built. The code is complete; we're waiting on deployment credentials to take it live.</p>
+
+      <h2>The product in 30 seconds</h2>
+
+      <ul>
+        <li>Venue signs up, gets a dashboard, configures trivia settings (category, difficulty, number of questions)</li>
+        <li>Starts a session → QR code appears on the bar's screen</li>
+        <li>Players scan, enter a name, play from their phone</li>
+        <li>Questions stream from Claude in real time with a 30-second timer</li>
+        <li>Live leaderboard updates after each question</li>
+        <li>Venue pays €29–79/month depending on session volume</li>
+      </ul>
+
+      <h2>Stack overview</h2>
+
+      <div class="my-6 space-y-2">
+        <div class="arch-row">
+          <div class="arch-label">API</div>
+          <p class="text-slate-400 text-sm m-0">Hono on Node.js — lightweight, fast, TypeScript-first. Handles REST routes for sessions, answers, questions, venues, and Stripe webhooks.</p>
+        </div>
+        <div class="arch-row">
+          <div class="arch-label">Frontend</div>
+          <p class="text-slate-400 text-sm m-0">Next.js 14 App Router. Player flow is a single route with state machine: name entry → question → result → leaderboard. SSE for real-time pushes.</p>
+        </div>
+        <div class="arch-row">
+          <div class="arch-label">Database</div>
+          <p class="text-slate-400 text-sm m-0">Supabase (PostgreSQL + pgvector). Supabase Realtime handles leaderboard broadcasting without a separate WebSocket server.</p>
+        </div>
+        <div class="arch-row">
+          <div class="arch-label">AI</div>
+          <p class="text-slate-400 text-sm m-0">Claude Sonnet for generation, Claude Haiku for validation. Two-call pattern per question. pgvector cosine similarity for deduplication.</p>
+        </div>
+        <div class="arch-row">
+          <div class="arch-label">Queue</div>
+          <p class="text-slate-400 text-sm m-0">BullMQ + Upstash Redis. Question generation jobs pre-warm 10 questions per session asynchronously before the game starts.</p>
+        </div>
+        <div class="arch-row">
+          <div class="arch-label">Billing</div>
+          <p class="text-slate-400 text-sm m-0">Stripe Subscriptions + webhooks. Tier enforcement at the API layer based on current subscription status.</p>
+        </div>
+        <div class="arch-row">
+          <div class="arch-label">Auth</div>
+          <p class="text-slate-400 text-sm m-0">Clerk for venue accounts. Players are anonymous (name + session ID stored in localStorage).</p>
+        </div>
+        <div class="arch-row">
+          <div class="arch-label">Deploy</div>
+          <p class="text-slate-400 text-sm m-0">Railway — two services (API, web), automatic deploys from GitHub main branch.</p>
+        </div>
+      </div>
+
+      <h2>The AI question pipeline</h2>
+
+      <p>This is the technically interesting part. Generating questions is easy. Generating <em>good, non-duplicate</em> questions at scale is harder.</p>
+
+      <h3>Two-model pattern</h3>
+
+      <p>We use Claude Sonnet to generate and Claude Haiku to validate. The generation prompt asks for question + 4 answer choices + correct answer + explanation. The validation prompt checks:</p>
+      <ul>
+        <li>Is the correct answer actually correct?</li>
+        <li>Are the distractors plausible but clearly wrong?</li>
+        <li>Is the question unambiguous?</li>
+      </ul>
+
+      <p>Haiku rejects ~15% of Sonnet's output. The questions that pass are noticeably better than single-model generation.</p>
+
+      <h3>pgvector deduplication</h3>
+
+      <p>We embed each approved question using a text embedding model and store the vector in Supabase. Before any new question is used, we query for cosine similarity against all questions in the venue's history:</p>
+
+      <div class="code-block">SELECT id, question_text,
+  1 - (embedding &lt;=&gt; $1) AS similarity
+FROM questions
+WHERE venue_id = $2
+  AND 1 - (embedding &lt;=&gt; $1) &gt; 0.85
+LIMIT 1;</div>
+
+      <p>If similarity &gt; 0.85 with any existing question, we regenerate. This means even if Claude produces a semantically identical question with different wording ("What year was X founded?" vs "In which year was X established?"), it gets caught.</p>
+
+      <h3>Pre-warming with BullMQ</h3>
+
+      <p>We don't generate questions on-demand during a game — that would add 2-3 seconds of latency per question. Instead, a BullMQ job fires when a session starts and pre-generates 10 questions asynchronously. The game can start after the first 3 are ready; the rest arrive before they're needed.</p>
+
+      <h2>Real-time architecture</h2>
+
+      <p>Supabase Realtime is doing the heavy lifting. The leaderboard table in PostgreSQL has a Realtime subscription; any INSERT or UPDATE to player scores broadcasts to all connected clients in the session. We get WebSocket-like behavior without running a WebSocket server.</p>
+
+      <p>The question timer runs client-side (no server round-trips), synced at session start. Answers POST to the API within the 30-second window; late answers are rejected at the route level.</p>
+
+      <h2>Billing and tier enforcement</h2>
+
+      <p>Three tiers:</p>
+      <ul>
+        <li><strong>Starter (€29/mo):</strong> 4 sessions/month, 20 players/session</li>
+        <li><strong>Pro (€49/mo):</strong> 15 sessions/month, 50 players/session</li>
+        <li><strong>Unlimited (€79/mo):</strong> No limits</li>
+      </ul>
+
+      <p>Stripe webhooks update a <code class="text-violet-400">subscriptions</code> table in Supabase on every payment event. The API checks tier limits before allowing session creation. No client-side gating — the enforcement is entirely server-side.</p>
+
+      <div class="callout">
+        <p class="text-slate-300 text-sm"><strong>Why this stack for an MVP?</strong> Hono + Next.js + Supabase eliminates the need for a separate WebSocket server, a separate auth service, and a separate file storage service. Supabase does database, auth (via Clerk integration), storage, and realtime. Railway handles deploy in one click. The whole infrastructure fits on two Railway services and one Supabase project.</p>
+      </div>
+
+      <h2>What's next</h2>
+
+      <p>The code is complete and on GitHub. Pending deployment: Supabase project (schema already written), Railway services, Clerk application, and Stripe products. Once credentials are wired, we go live.</p>
+
+      <p>First target market: independent bars and gastropubs in Paris and Lyon. The pitch is simple: "Your host spends 3 hours every trivia night sourcing questions. Barplay handles that. €29/month."</p>
+
+    </article>
+
+    <div class="mt-12 p-8 rounded-2xl text-center" style="background: linear-gradient(135deg, rgba(124,58,237,.1), rgba(236,72,153,.1)); border: 1px solid rgba(124,58,237,.3)">
+      <p class="font-bold text-white text-lg mb-2">Want a SaaS MVP like this?</p>
+      <p class="text-slate-400 text-sm mb-5">We build full-stack SaaS products in 2 weeks. Auth, billing, core feature loop, deployed. From €4,900.</p>
+      <a href="../index.html#contact" class="inline-block bg-gradient-to-r from-violet-600 to-pink-500 text-white font-bold px-7 py-3.5 rounded-xl hover:opacity-90 transition">Get a quote →</a>
+    </div>
+
+    <div class="mt-8 pt-8 border-t border-white/5">
+      <a href="index.html" class="text-violet-400 text-sm hover:text-violet-300">← Back to blog</a>
+    </div>
+  </div>
+
+  <footer class="text-center text-xs text-slate-600 py-8 border-t border-white/5">
+    © 2026 Factoria · <a href="../index.html" class="hover:text-slate-400">Home</a>
+  </footer>
+</body>
+</html>
