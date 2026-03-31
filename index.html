@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Factoria — AI-powered products that ship and earn</title>
+  <meta name="description" content="Factoria builds AI-powered SaaS products, content systems, and growth engines. We ship fast, find paying users, and scale what works." />
+  <link rel="canonical" href="https://gawad95.github.io/factoria/" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'sans-serif'] },
+          colors: {
+            brand: { DEFAULT: '#7c3aed', light: '#a78bfa', dark: '#5b21b6' },
+            pink: { brand: '#ec4899' }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { background: #0a0a0f; color: #e2e8f0; }
+    .gradient-text {
+      background: linear-gradient(135deg, #a78bfa, #ec4899);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .gradient-border {
+      background: linear-gradient(135deg, #7c3aed, #ec4899);
+      padding: 1px;
+      border-radius: 16px;
+    }
+    .gradient-border-inner { background: #0f0f1a; border-radius: 15px; }
+    .card { background: #0f0f1a; border: 1px solid #1e1b4b; border-radius: 16px; }
+    .card-hover { transition: border-color .2s, transform .2s; }
+    .card-hover:hover { border-color: #7c3aed; transform: translateY(-2px); }
+    .pill { background: rgba(124,58,237,.15); border: 1px solid rgba(124,58,237,.3); color: #a78bfa; border-radius: 9999px; padding: 4px 14px; font-size: 0.75rem; font-weight: 600; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .fade-up { animation: fadeUp 0.5s ease forwards; }
+    .glow { box-shadow: 0 0 40px rgba(124,58,237,.25); }
+  </style>
+</head>
+<body class="font-sans antialiased">
+
+  <!-- Nav -->
+  <nav class="fixed top-0 w-full z-50 bg-black/60 backdrop-blur-md border-b border-white/5">
+    <div class="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-600 to-pink-500 flex items-center justify-center text-white font-black text-sm">F</div>
+        <span class="font-bold text-white text-lg">Factoria</span>
+      </div>
+      <div class="flex items-center gap-6">
+        <a href="#products" class="text-sm text-slate-400 hover:text-white transition">Products</a>
+        <a href="#services" class="text-sm text-slate-400 hover:text-white transition">Services</a>
+        <a href="#contact" class="bg-gradient-to-r from-violet-600 to-pink-500 text-white font-semibold text-sm px-5 py-2 rounded-xl hover:opacity-90 transition">Work with us</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="pt-32 pb-24 px-6 text-center">
+    <div class="max-w-3xl mx-auto fade-up">
+      <div class="pill inline-block mb-6">AI agency · ships in weeks, not months</div>
+      <h1 class="text-5xl sm:text-6xl font-black leading-tight mb-6">
+        We build <span class="gradient-text">AI products</span><br />that earn from day one
+      </h1>
+      <p class="text-slate-400 text-xl max-w-2xl mx-auto mb-10">
+        Content systems. SaaS MVPs. Growth engines. We move fast, cut fluff, and measure everything in revenue.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="#contact" class="bg-gradient-to-r from-violet-600 to-pink-500 text-white font-bold px-8 py-4 rounded-xl text-base hover:opacity-90 transition glow">
+          Start a project →
+        </a>
+        <a href="#products" class="border border-white/10 text-slate-300 font-semibold px-8 py-4 rounded-xl text-base hover:border-violet-500 hover:text-white transition">
+          See what we've built
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats bar -->
+  <section class="py-10 px-6 border-y border-white/5">
+    <div class="max-w-4xl mx-auto grid grid-cols-2 sm:grid-cols-4 gap-8 text-center">
+      <div>
+        <div class="text-3xl font-black gradient-text">3</div>
+        <div class="text-slate-500 text-sm mt-1">Products live</div>
+      </div>
+      <div>
+        <div class="text-3xl font-black gradient-text">Daily</div>
+        <div class="text-slate-500 text-sm mt-1">Content published</div>
+      </div>
+      <div>
+        <div class="text-3xl font-black gradient-text">€0</div>
+        <div class="text-slate-500 text-sm mt-1">Infrastructure cost</div>
+      </div>
+      <div>
+        <div class="text-3xl font-black gradient-text">2026</div>
+        <div class="text-slate-500 text-sm mt-1">Founded</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Products -->
+  <section id="products" class="py-20 px-6">
+    <div class="max-w-5xl mx-auto">
+      <div class="text-center mb-12">
+        <div class="pill inline-block mb-4">What we've shipped</div>
+        <h2 class="text-3xl font-black">Live products</h2>
+        <p class="text-slate-400 mt-3">Built, deployed, and monetizing — or close to it.</p>
+      </div>
+
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+        <!-- Switcherr -->
+        <div class="gradient-border">
+          <div class="gradient-border-inner p-6 h-full">
+            <div class="flex items-center gap-3 mb-4">
+              <div class="w-10 h-10 rounded-xl bg-indigo-600/20 border border-indigo-500/30 flex items-center justify-center text-lg">⚡</div>
+              <div>
+                <div class="font-bold text-white">Switcherr</div>
+                <div class="text-xs text-green-400 font-medium">● Live</div>
+              </div>
+            </div>
+            <p class="text-slate-400 text-sm leading-relaxed mb-4">
+              French electricity comparison tool. Compares 7 providers by consumption profile, UTM-tracked affiliate links, email capture, SEO blog.
+            </p>
+            <div class="flex flex-wrap gap-2 mb-5">
+              <span class="text-xs bg-white/5 text-slate-400 px-2 py-1 rounded-lg">Affiliate</span>
+              <span class="text-xs bg-white/5 text-slate-400 px-2 py-1 rounded-lg">SEO</span>
+              <span class="text-xs bg-white/5 text-slate-400 px-2 py-1 rounded-lg">France</span>
+            </div>
+            <a href="https://gawad95.github.io/switcherr/" target="_blank" class="text-violet-400 text-sm font-medium hover:text-violet-300 transition">View live →</a>
+          </div>
+        </div>
+
+        <!-- Barplay -->
+        <div class="card card-hover p-6">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-10 h-10 rounded-xl bg-amber-600/20 border border-amber-500/30 flex items-center justify-center text-lg">🎯</div>
+            <div>
+              <div class="font-bold text-white">Barplay</div>
+              <div class="text-xs text-amber-400 font-medium">● Deploying soon</div>
+            </div>
+          </div>
+          <p class="text-slate-400 text-sm leading-relaxed mb-4">
+            AI-powered bar trivia SaaS. Venues get a QR code, players join from their phone, Claude generates questions in real-time. Stripe billing, leaderboard, venue dashboard.
+          </p>
+          <div class="flex flex-wrap gap-2">
+            <span class="text-xs bg-white/5 text-slate-400 px-2 py-1 rounded-lg">SaaS</span>
+            <span class="text-xs bg-white/5 text-slate-400 px-2 py-1 rounded-lg">Claude AI</span>
+            <span class="text-xs bg-white/5 text-slate-400 px-2 py-1 rounded-lg">B2B</span>
+          </div>
+        </div>
+
+        <!-- Content Factory -->
+        <div class="card card-hover p-6">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-10 h-10 rounded-xl bg-green-600/20 border border-green-500/30 flex items-center justify-center text-lg">⚙️</div>
+            <div>
+              <div class="font-bold text-white">Content Factory</div>
+              <div class="text-xs text-green-400 font-medium">● Running daily</div>
+            </div>
+          </div>
+          <p class="text-slate-400 text-sm leading-relaxed mb-4">
+            Autonomous content pipeline. Generates platform-native copy (X thread, LinkedIn post, blog article) every day using Claude Haiku. Zero human input.
+          </p>
+          <div class="flex flex-wrap gap-2">
+            <span class="text-xs bg-white/5 text-slate-400 px-2 py-1 rounded-lg">Automation</span>
+            <span class="text-xs bg-white/5 text-slate-400 px-2 py-1 rounded-lg">Claude AI</span>
+            <span class="text-xs bg-white/5 text-slate-400 px-2 py-1 rounded-lg">TypeScript</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Services -->
+  <section id="services" class="py-20 px-6 border-t border-white/5">
+    <div class="max-w-5xl mx-auto">
+      <div class="text-center mb-12">
+        <div class="pill inline-block mb-4">What we do for clients</div>
+        <h2 class="text-3xl font-black">Services</h2>
+        <p class="text-slate-400 mt-3">Fixed-scope sprints. Fast delivery. Revenue-first focus.</p>
+      </div>
+
+      <div class="grid sm:grid-cols-2 gap-6">
+
+        <div class="card card-hover p-8">
+          <div class="text-3xl mb-4">🚀</div>
+          <h3 class="font-bold text-white text-lg mb-2">SaaS MVP Sprint</h3>
+          <p class="text-slate-400 text-sm leading-relaxed mb-4">Full-stack SaaS in 2 weeks. Auth, billing, core feature loop, deployment. Built to find paying users fast, not to impress investors.</p>
+          <div class="text-violet-400 font-bold">From €4,900</div>
+        </div>
+
+        <div class="card card-hover p-8">
+          <div class="text-3xl mb-4">📡</div>
+          <h3 class="font-bold text-white text-lg mb-2">Content Engine Setup</h3>
+          <p class="text-slate-400 text-sm leading-relaxed mb-4">Autonomous content pipeline for your niche. Daily AI-generated posts, platform-native formats, scheduled publishing. Set it, forget it.</p>
+          <div class="text-violet-400 font-bold">From €1,900</div>
+        </div>
+
+        <div class="card card-hover p-8">
+          <div class="text-3xl mb-4">📈</div>
+          <h3 class="font-bold text-white text-lg mb-2">Affiliate Site Build</h3>
+          <p class="text-slate-400 text-sm leading-relaxed mb-4">SEO-optimized comparison tool or review site targeting a monetizable niche. Affiliate links wired, email capture, blog content included.</p>
+          <div class="text-violet-400 font-bold">From €2,400</div>
+        </div>
+
+        <div class="card card-hover p-8">
+          <div class="text-3xl mb-4">🤖</div>
+          <h3 class="font-bold text-white text-lg mb-2">AI Agent Integration</h3>
+          <p class="text-slate-400 text-sm leading-relaxed mb-4">Wire AI into your existing workflow. Customer support, document processing, internal tools. Measurable time saved, measurable money saved.</p>
+          <div class="text-violet-400 font-bold">From €2,900</div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- How we work -->
+  <section class="py-20 px-6 border-t border-white/5">
+    <div class="max-w-3xl mx-auto text-center">
+      <div class="pill inline-block mb-4">How we operate</div>
+      <h2 class="text-3xl font-black mb-12">Speed is the product</h2>
+      <div class="grid sm:grid-cols-3 gap-8 text-left">
+        <div>
+          <div class="text-2xl font-black gradient-text mb-2">01</div>
+          <h3 class="font-bold text-white mb-2">Brief → plan in 24h</h3>
+          <p class="text-slate-400 text-sm">You describe the goal. We send back a scoped plan with deliverables and timeline — same day.</p>
+        </div>
+        <div>
+          <div class="text-2xl font-black gradient-text mb-2">02</div>
+          <h3 class="font-bold text-white mb-2">Ship in 1–2 weeks</h3>
+          <p class="text-slate-400 text-sm">No discovery phase theater. We build, you review. Live product in your hands fast.</p>
+        </div>
+        <div>
+          <div class="text-2xl font-black gradient-text mb-2">03</div>
+          <h3 class="font-bold text-white mb-2">Revenue or refine</h3>
+          <p class="text-slate-400 text-sm">We track what converts. If it's not working, we iterate. We don't disappear after delivery.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact / CTA -->
+  <section id="contact" class="py-20 px-6 border-t border-white/5">
+    <div class="max-w-2xl mx-auto text-center">
+      <div class="pill inline-block mb-4">Start a project</div>
+      <h2 class="text-3xl font-black mb-4">What are you building?</h2>
+      <p class="text-slate-400 mb-8">Tell us about your idea. We'll tell you exactly what we'd ship and when.</p>
+
+      <form action="https://formsubmit.co/ajax/g.yabas@gmail.com" method="POST" id="contactForm" class="text-left">
+        <div class="grid sm:grid-cols-2 gap-4 mb-4">
+          <div>
+            <label class="text-xs text-slate-400 font-medium block mb-1.5">Your name</label>
+            <input name="name" type="text" required placeholder="Alex Martin"
+              class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder:text-slate-600 focus:outline-none focus:border-violet-500 transition" />
+          </div>
+          <div>
+            <label class="text-xs text-slate-400 font-medium block mb-1.5">Email</label>
+            <input name="email" type="email" required placeholder="alex@company.com"
+              class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder:text-slate-600 focus:outline-none focus:border-violet-500 transition" />
+          </div>
+        </div>
+        <div class="mb-4">
+          <label class="text-xs text-slate-400 font-medium block mb-1.5">What do you want to build?</label>
+          <select name="service_type"
+            class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-slate-300 focus:outline-none focus:border-violet-500 transition">
+            <option value="" class="bg-gray-900">Select a service...</option>
+            <option value="saas_mvp" class="bg-gray-900">SaaS MVP Sprint</option>
+            <option value="content_engine" class="bg-gray-900">Content Engine Setup</option>
+            <option value="affiliate_site" class="bg-gray-900">Affiliate Site Build</option>
+            <option value="ai_agent" class="bg-gray-900">AI Agent Integration</option>
+            <option value="other" class="bg-gray-900">Something else</option>
+          </select>
+        </div>
+        <div class="mb-6">
+          <label class="text-xs text-slate-400 font-medium block mb-1.5">Describe your project</label>
+          <textarea name="message" rows="4" required placeholder="What's the idea, who's the customer, what does success look like?"
+            class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder:text-slate-600 focus:outline-none focus:border-violet-500 transition resize-none"></textarea>
+        </div>
+        <button type="submit" id="submitBtn"
+          class="w-full bg-gradient-to-r from-violet-600 to-pink-500 text-white font-bold py-4 rounded-xl hover:opacity-90 transition text-base glow">
+          Send brief →
+        </button>
+        <p id="formSuccess" class="text-center text-green-400 text-sm font-medium mt-4 hidden">✓ Brief received — we'll be in touch within 24 hours.</p>
+        <p class="text-center text-slate-600 text-xs mt-4">No commitment. No sales call. Just a fast reply.</p>
+      </form>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="py-10 px-6 border-t border-white/5 text-center">
+    <div class="flex items-center justify-center gap-2 mb-4">
+      <div class="w-6 h-6 rounded-lg bg-gradient-to-br from-violet-600 to-pink-500 flex items-center justify-center text-white font-black text-xs">F</div>
+      <span class="font-bold text-white">Factoria</span>
+    </div>
+    <p class="text-slate-600 text-xs">© 2026 Factoria · AI agency · Built with Claude</p>
+  </footer>
+
+  <script>
+    document.getElementById('contactForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const btn = document.getElementById('submitBtn');
+      btn.disabled = true;
+      btn.textContent = 'Sending...';
+      try {
+        const data = new FormData(this);
+        data.append('_subject', 'New project brief — Factoria');
+        data.append('_captcha', 'false');
+        const res = await fetch(this.action, { method: 'POST', body: data, headers: { Accept: 'application/json' } });
+        if (res.ok) {
+          document.getElementById('formSuccess').classList.remove('hidden');
+          btn.classList.add('hidden');
+        } else {
+          btn.textContent = 'Error — please try again';
+          btn.disabled = false;
+        }
+      } catch (_) {
+        btn.textContent = 'Error — please try again';
+        btn.disabled = false;
+      }
+    });
+  </script>
+
+</body>
+</html>
